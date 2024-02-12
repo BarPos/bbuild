@@ -1,0 +1,7 @@
+-xc++
+-Wall
+-std=c++17
+-DYAML_CPP_STATIC_DEFINE
+-Ibbuild\src\
+-Ivendor\yaml-cpp\include\
+
