@@ -12,9 +12,12 @@ struct PROJECT {
   std::string path;
   std::string name;
   PROJECT_TYPE type;
-  std::vector<std::string> sources;
+  std::vector<std::string> source;
   std::vector<std::string> include;
   std::vector<std::string> depends;
   std::vector<std::string> link;
 };
+
+PROJECT loadProject(const std::string& path);
+void printProject(const PROJECT& p);
 }  // namespace bbuild
