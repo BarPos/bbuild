@@ -1,6 +1,6 @@
 project:
   name: yaml-cpp
-  type: static
+  type: lib
   output: yaml-cpp/
   source:
     - ../vendor/yaml-cpp/src/**.cpp

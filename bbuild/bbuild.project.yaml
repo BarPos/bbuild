@@ -8,6 +8,6 @@ project:
     - src/
     - ../vendor/yaml-cpp/include/
   depends:
-    - ../yaml-cpp
+    - yaml-cpp
   link:
     - ../build/yaml-cpp/yaml-cpp
