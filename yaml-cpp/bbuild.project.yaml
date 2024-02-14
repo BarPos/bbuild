@@ -1,0 +1,9 @@
+project:
+  name: yaml-cpp
+  type: static
+  output: yaml-cpp/
+  source:
+    - ../vendor/yaml-cpp/src/**.cpp
+  include:
+    - ../vendor/yaml-cpp/include/
+  

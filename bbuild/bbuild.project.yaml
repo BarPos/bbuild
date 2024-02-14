@@ -1,0 +1,13 @@
+project:
+  name: bbuild
+  type: exec
+  output: bbuild/
+  source:
+    - src/**.cpp
+  include:
+    - src/
+    - ../vendor/yaml-cpp/include/
+  depends:
+    - ../yaml-cpp
+  link:
+    - ../build/yaml-cpp/yaml-cpp

@@ -1,2 +1,3 @@
-call build\main.exe
+@echo off
+call build\bbuild.exe
 
