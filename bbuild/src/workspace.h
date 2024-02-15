@@ -8,6 +8,7 @@
 namespace bbuild {
 struct WORKSPACE {
   std::string name;
+  std::string defProject;
   std::vector<std::string> projects;
 };
 

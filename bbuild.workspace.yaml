@@ -1,5 +1,6 @@
 workspace:
   name: bbuild
+  default: bbuild
   projects:
     - bbuild
     - yaml-cpp
