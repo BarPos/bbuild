@@ -10,4 +10,7 @@ struct WORKSPACE {
   std::string name;
   std::vector<std::string> projects;
 };
+
+WORKSPACE loadWorkspace(const std::string& path);
+void printWorkspace(const WORKSPACE& w);
 }  // namespace bbuild

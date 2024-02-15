@@ -24,7 +24,6 @@ PROJECT loadProject(const std::string& path) {
     printf("'project/type' does not exist!\n");
     return p;
   }
-
   if (!project["project"]["output"]) {
     printf("'project/output' does not exist!\n");
     return p;
@@ -77,7 +76,7 @@ PROJECT loadProject(const std::string& path) {
 }
 
 void printProject(const PROJECT& p) {
-  printf("Name: %s\n", p.name.c_str());
+  printf("Project: %s\n", p.name.c_str());
   printf("Type: %s\n", (p.type == PROJECT_TYPE::EXEC ? "exec" : "lib"));
   printf("Output: %s\n", p.path.c_str());
   printf("Sources:\n");
