@@ -3,6 +3,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include "help.h"
+#include "loader.h"
 #include "project.h"
 #include "workspace.h"
 
@@ -21,8 +22,12 @@ int main(int argc, char **argv) {
     } else {
       arg = "./";
     }
-    printf("Loading project: %sbbuild.project.yaml\n", argv[2]);
-    bbuild::PROJECT p = bbuild::loadProject(argv[2]);
+    printf("Loading project: %sbbuild.project.yaml\n", arg.c_str());
+    bbuild::PROJECT p;
+    if (!bbuild::loadProject(arg.c_str(), &p)) {
+      fprintf(stderr, "Failed to load the project!\n");
+      return 1;
+    }
     bbuild::printProject(p);
     return 0;
   } else if (strcmp(argv[1], "testw") == 0) {  // TEST WORKSPACE LOADING COMMAND
@@ -33,11 +38,18 @@ int main(int argc, char **argv) {
       arg = "./";
     }
     printf("Loading workspace: %sbbuild.workspace.yaml\n", arg.c_str());
-    bbuild::WORKSPACE w = bbuild::loadWorkspace(arg.c_str());
+    bbuild::WORKSPACE w;
+    if (!bbuild::loadWorkspace(arg.c_str(), &w)) {
+      fprintf(stderr, "Failed to load the workspace!\n");
+      return 1;
+    }
     bbuild::printWorkspace(w);
     return 0;
   } else if (strcmp(argv[1], "build") == 0) {  // BUILD COMMAND
-  } else {                                     // INCORRECT COMMAND
+    printf("BUILDING WORKSPACE\n");
+    bbuild::load();
+    return 0;
+  } else {  // INCORRECT COMMAND
     printf("Use '%s help' to see ussage.\n", argv[0]);
     return 1;
   }

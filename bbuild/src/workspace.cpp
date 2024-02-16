@@ -1,25 +1,34 @@
 #include "workspace.h"
 
+#include <filesystem>
+
 namespace bbuild {
-WORKSPACE loadWorkspace(const std::string& path) {
+bool loadWorkspace(const std::string& path, WORKSPACE* r) {
   WORKSPACE w = {};
+
+  if (!std::filesystem::exists(path + "bbuild.workspace.yaml")) {
+    fprintf(stderr, "'%sbbuild.workspace.yaml' does not exist!\n",
+            path.c_str());
+    return false;
+  }
+
   YAML::Node workspace = YAML::LoadFile(path + "bbuild.workspace.yaml");
 
   if (!workspace["workspace"]) {
-    printf("'workspace' does not exist!\n");
-    return w;
+    fprintf(stderr, "'workspace' does not exist!\n");
+    return false;
   }
   if (!workspace["workspace"]["name"]) {
-    printf("'workspace/name' does not exist!\n");
-    return w;
+    fprintf(stderr, "'workspace/name' does not exist!\n");
+    return false;
   }
   if (!workspace["workspace"]["default"]) {
-    printf("'workspace/default' does not exist!\n");
-    return w;
+    fprintf(stderr, "'workspace/default' does not exist!\n");
+    return false;
   }
   if (!workspace["workspace"]["projects"].IsSequence()) {
-    printf("'workspace/projects' does not exist!\n");
-    return w;
+    fprintf(stderr, "'workspace/projects' does not exist!\n");
+    return false;
   }
 
   w.name = workspace["workspace"]["name"].as<std::string>();
@@ -30,7 +39,8 @@ WORKSPACE loadWorkspace(const std::string& path) {
         workspace["workspace"]["projects"][i].as<std::string>());
   }
 
-  return w;
+  *r = w;
+  return true;
 }
 
 void printWorkspace(const WORKSPACE& w) {

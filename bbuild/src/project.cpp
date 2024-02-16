@@ -8,42 +8,48 @@
 #include "yaml-cpp/node/parse.h"
 
 namespace bbuild {
-PROJECT loadProject(const std::string& path) {
+bool loadProject(const std::string& path, PROJECT* r) {
   PROJECT p = {};
+
+  if (!std::filesystem::exists(path + "bbuild.project.yaml")) {
+    fprintf(stderr, "'%sbbuild.project.yaml' does not exist!\n", path.c_str());
+    return false;
+  }
+
   YAML::Node project = YAML::LoadFile(path + "bbuild.project.yaml");
 
   if (!project["project"]) {
     printf("'project' does not exist!\n");
-    return p;
+    return false;
   }
   if (!project["project"]["name"]) {
     printf("'project/name' does not exist!\n");
-    return p;
+    return false;
   }
   if (!project["project"]["type"]) {
     printf("'project/type' does not exist!\n");
-    return p;
+    return false;
   }
   if (!project["project"]["output"]) {
     printf("'project/output' does not exist!\n");
-    return p;
+    return false;
   }
   if (!project["project"]["source"].IsSequence()) {
     printf("'project/source' does not exist!\n");
-    return p;
+    return false;
   }
   if (!project["project"]["include"].IsSequence()) {
     printf("'project/include' does not exist!\n");
-    return p;
+    return false;
   }
 
   if (!project["project"]["depends"].IsSequence()) {
     printf("'project/depends' does not exist!\n");
-    return p;
+    return false;
   }
   if (!project["project"]["link"].IsSequence()) {
     printf("'project/link' does not exist!\n");
-    return p;
+    return false;
   }
 
   std::string type = project["project"]["type"].as<std::string>();
@@ -53,7 +59,7 @@ PROJECT loadProject(const std::string& path) {
     p.type = PROJECT_TYPE::LIB;
   else {
     printf("'project/type' incorrect!\n");
-    return p;
+    return false;
   }
 
   p.name = project["project"]["name"].as<std::string>();
@@ -72,7 +78,8 @@ PROJECT loadProject(const std::string& path) {
     p.link.push_back(project["project"]["link"][i].as<std::string>());
   }
 
-  return p;
+  *r = p;
+  return true;
 }
 
 void printProject(const PROJECT& p) {

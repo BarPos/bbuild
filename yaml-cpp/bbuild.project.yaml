@@ -6,4 +6,6 @@ project:
     - ../vendor/yaml-cpp/src/**.cpp
   include:
     - ../vendor/yaml-cpp/include/
+  depends: []
+  link: []
   

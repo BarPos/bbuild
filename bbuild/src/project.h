@@ -2,6 +2,7 @@
 
 #include <yaml-cpp/yaml.h>
 
+#include <filesystem>
 #include <iostream>
 #include <vector>
 
@@ -18,6 +19,6 @@ struct PROJECT {
   std::vector<std::string> link;
 };
 
-PROJECT loadProject(const std::string& path);
+bool loadProject(const std::string& path, PROJECT* r);
 void printProject(const PROJECT& p);
 }  // namespace bbuild
