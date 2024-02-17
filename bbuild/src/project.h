@@ -10,11 +10,12 @@ namespace bbuild {
 enum PROJECT_TYPE { EXEC = 1, LIB = 2 };
 
 struct PROJECT {
-  std::string path;
   std::string name;
+  std::string path;
   PROJECT_TYPE type;
   std::vector<std::string> source;
   std::vector<std::string> include;
+  std::vector<std::string> defines;
   std::vector<std::string> depends;
   std::vector<std::string> link;
 };

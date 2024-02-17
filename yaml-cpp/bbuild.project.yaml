@@ -1,11 +1,12 @@
 project:
   name: yaml-cpp
   type: lib
-  output: yaml-cpp/
   source:
     - ../vendor/yaml-cpp/src/**.cpp
   include:
     - ../vendor/yaml-cpp/include/
+  defines:
+    - YAML_CPP_STATIC_DEFINE
   depends: []
   link: []
   

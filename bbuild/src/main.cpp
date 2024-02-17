@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     return 0;
   } else if (strcmp(argv[1], "build") == 0) {  // BUILD COMMAND
     printf("BUILDING WORKSPACE\n");
-    bbuild::load();
+    if (!bbuild::load()) return 1;
     return 0;
   } else {  // INCORRECT COMMAND
     printf("Use '%s help' to see ussage.\n", argv[0]);

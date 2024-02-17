@@ -30,10 +30,6 @@ bool loadProject(const std::string& path, PROJECT* r) {
     printf("'project/type' does not exist!\n");
     return false;
   }
-  if (!project["project"]["output"]) {
-    printf("'project/output' does not exist!\n");
-    return false;
-  }
   if (!project["project"]["source"].IsSequence()) {
     printf("'project/source' does not exist!\n");
     return false;
@@ -42,7 +38,10 @@ bool loadProject(const std::string& path, PROJECT* r) {
     printf("'project/include' does not exist!\n");
     return false;
   }
-
+  if (!project["project"]["defines"].IsSequence()) {
+    printf("'project/defines' does not exist!\n");
+    return false;
+  }
   if (!project["project"]["depends"].IsSequence()) {
     printf("'project/depends' does not exist!\n");
     return false;
@@ -71,6 +70,9 @@ bool loadProject(const std::string& path, PROJECT* r) {
   for (size_t i = 0; i < project["project"]["include"].size(); i++) {
     p.include.push_back(project["project"]["include"][i].as<std::string>());
   }
+  for (size_t i = 0; i < project["project"]["defines"].size(); i++) {
+    p.defines.push_back(project["project"]["defines"][i].as<std::string>());
+  }
   for (size_t i = 0; i < project["project"]["depends"].size(); i++) {
     p.depends.push_back(project["project"]["depends"][i].as<std::string>());
   }
@@ -85,13 +87,16 @@ bool loadProject(const std::string& path, PROJECT* r) {
 void printProject(const PROJECT& p) {
   printf("Project: %s\n", p.name.c_str());
   printf("Type: %s\n", (p.type == PROJECT_TYPE::EXEC ? "exec" : "lib"));
-  printf("Output: %s\n", p.path.c_str());
   printf("Sources:\n");
   for (auto& s : p.source) {
     printf(" - %s\n", s.c_str());
   }
   printf("Includes:\n");
   for (auto& s : p.include) {
+    printf(" - %s\n", s.c_str());
+  }
+  printf("Defines:\n");
+  for (auto& s : p.defines) {
     printf(" - %s\n", s.c_str());
   }
   printf("Depends:\n");

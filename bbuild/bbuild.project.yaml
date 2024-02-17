@@ -1,12 +1,13 @@
 project:
   name: bbuild
   type: exec
-  output: bbuild/
   source:
     - src/**.cpp
   include:
     - src/
     - ../vendor/yaml-cpp/include/
+  defines:
+    - YAML_CPP_STATIC_DEFINE
   depends:
     - yaml-cpp
   link:
