@@ -72,9 +72,9 @@ bool buildProject(const PROJECT& p) {
     objectCommand += "../../" + p.path + s + " ";
   }
 
-  printf("%s\n", objectCommand.c_str());
+  printf("Object command: %s\n", objectCommand.c_str());
   std::string oco = runCommand(objectCommand.c_str());
-  printf("%s\n", oco.c_str());
+  printf("Object command output: %s\n", oco.c_str());
 
   std::string linkCommand = "cd build/" + p.name + " && ";
 
@@ -91,9 +91,9 @@ bool buildProject(const PROJECT& p) {
       break;
   }
 
-  printf("%s\n", linkCommand.c_str());
+  printf("Link command: %s\n", linkCommand.c_str());
   std::string lco = runCommand(linkCommand.c_str());
-  printf("%s\n", lco.c_str());
+  printf("Link command output: %s\n", lco.c_str());
 
   return true;
 }
