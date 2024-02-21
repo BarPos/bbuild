@@ -1,8 +1,9 @@
 project:
   name: bbuild
   type: exec
-  source:
-    - src/**.cpp
+  source: []
+  sourceDir:
+    - src/
   include:
     - src/
     - ../vendor/yaml-cpp/include/
