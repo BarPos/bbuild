@@ -76,6 +76,30 @@ bool buildProject(const PROJECT& p) {
   std::string oco = runCommand(objectCommand.c_str());
   printf("Object command output: %s\n", oco.c_str());
 
+  for (const auto& s : p.sourceDirs) {
+    if (std::filesystem::is_directory(p.path + s)) {
+      for (const auto& f :
+           std::filesystem::recursive_directory_iterator(p.path + s)) {
+        if (f.path().filename().extension().string() == ".cpp") {
+          std::string oc =
+              "cd build/" + p.name + " && clang -xc++ -c -Wall -std=c++20 ";
+          for (const auto& i : p.include) {
+            oc += "-I../../" + p.path + i + " ";
+          }
+          for (const auto& d : p.defines) {
+            oc += "-D" + d + " ";
+          }
+          oc += "../../" + p.path + s + f.path().filename().string() + " ";
+          oc += "-o " + f.path().filename().stem().string() + ".o";
+
+          printf("Object: %s\n", oc.c_str());
+          std::string o = runCommand(oc.c_str());
+          printf("%s\n", o.c_str());
+        }
+      }
+    }
+  }
+
   std::string linkCommand = "cd build/" + p.name + " && ";
 
   switch (p.type) {

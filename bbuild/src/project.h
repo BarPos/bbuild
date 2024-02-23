@@ -14,6 +14,7 @@ struct PROJECT {
   std::string path;
   PROJECT_TYPE type;
   std::vector<std::string> source;
+  std::vector<std::string> sourceDirs;
   std::vector<std::string> include;
   std::vector<std::string> defines;
   std::vector<std::string> depends;

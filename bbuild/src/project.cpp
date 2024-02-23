@@ -1,5 +1,6 @@
 #include "project.h"
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -32,6 +33,10 @@ bool loadProject(const std::string& path, PROJECT* r) {
   }
   if (!project["project"]["source"].IsSequence()) {
     printf("'project/source' does not exist!\n");
+    return false;
+  }
+  if (!project["project"]["sourceDirs"].IsSequence()) {
+    printf("'project/sourceDirs' does not exist!\n");
     return false;
   }
   if (!project["project"]["include"].IsSequence()) {
@@ -67,6 +72,9 @@ bool loadProject(const std::string& path, PROJECT* r) {
   for (size_t i = 0; i < project["project"]["source"].size(); i++) {
     p.source.push_back(project["project"]["source"][i].as<std::string>());
   }
+  for (size_t i = 0; i < project["project"]["sourceDirs"].size(); i++) {
+    p.sourceDirs.push_back(project["project"]["sourceDirs"][i].as<std::string>());
+  }
   for (size_t i = 0; i < project["project"]["include"].size(); i++) {
     p.include.push_back(project["project"]["include"][i].as<std::string>());
   }
@@ -90,6 +98,16 @@ void printProject(const PROJECT& p) {
   printf("Sources:\n");
   for (auto& s : p.source) {
     printf(" - %s\n", s.c_str());
+  }
+  printf("Source Directories:\n");
+  for(auto& s : p.sourceDirs){
+    printf(" - %s\n", s.c_str());
+    if(std::filesystem::is_directory(p.path + s)){
+      for(const auto& f : std::filesystem::recursive_directory_iterator(p.path + s)){
+        if(f.path().filename().extension().string() == ".cpp")
+        printf("   - %s\n", f.path().filename().string().c_str());
+      }
+    }
   }
   printf("Includes:\n");
   for (auto& s : p.include) {

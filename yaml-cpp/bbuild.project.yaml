@@ -3,7 +3,7 @@ project:
   type: lib
   source:
     - ../vendor/yaml-cpp/src/**.cpp
-  sourceDir: []
+  sourceDirs: []
   include:
     - ../vendor/yaml-cpp/include/
   defines:

@@ -2,7 +2,7 @@ project:
   name: bbuild
   type: exec
   source: []
-  sourceDir:
+  sourceDirs:
     - src/
   include:
     - src/
