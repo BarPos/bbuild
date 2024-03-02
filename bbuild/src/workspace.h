@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 
+#include "config.h"
+
 namespace bbuild {
 struct WORKSPACE {
   std::string name;
@@ -13,6 +15,6 @@ struct WORKSPACE {
   std::vector<std::string> projects;
 };
 
-bool loadWorkspace(const std::string& path, WORKSPACE* r);
+bool loadWorkspace(const std::string& path, WORKSPACE* r, const CONFIG* c);
 void printWorkspace(const WORKSPACE& w);
 }  // namespace bbuild

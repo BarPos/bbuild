@@ -9,7 +9,7 @@
 #include "yaml-cpp/node/parse.h"
 
 namespace bbuild {
-bool loadProject(const std::string& path, PROJECT* r) {
+bool loadProject(const std::string& path, PROJECT* r, const CONFIG* c) {
   PROJECT p = {};
 
   if (!std::filesystem::exists(path + "bbuild.project.yaml")) {
@@ -73,7 +73,8 @@ bool loadProject(const std::string& path, PROJECT* r) {
     p.source.push_back(project["project"]["source"][i].as<std::string>());
   }
   for (size_t i = 0; i < project["project"]["sourceDirs"].size(); i++) {
-    p.sourceDirs.push_back(project["project"]["sourceDirs"][i].as<std::string>());
+    p.sourceDirs.push_back(
+        project["project"]["sourceDirs"][i].as<std::string>());
   }
   for (size_t i = 0; i < project["project"]["include"].size(); i++) {
     p.include.push_back(project["project"]["include"][i].as<std::string>());
@@ -100,12 +101,13 @@ void printProject(const PROJECT& p) {
     printf(" - %s\n", s.c_str());
   }
   printf("Source Directories:\n");
-  for(auto& s : p.sourceDirs){
+  for (auto& s : p.sourceDirs) {
     printf(" - %s\n", s.c_str());
-    if(std::filesystem::is_directory(p.path + s)){
-      for(const auto& f : std::filesystem::recursive_directory_iterator(p.path + s)){
-        if(f.path().filename().extension().string() == ".cpp")
-        printf("   - %s\n", f.path().filename().string().c_str());
+    if (std::filesystem::is_directory(p.path + s)) {
+      for (const auto& f :
+           std::filesystem::recursive_directory_iterator(p.path + s)) {
+        if (f.path().filename().extension().string() == ".cpp")
+          printf("   - %s\n", f.path().string().c_str());
       }
     }
   }

@@ -10,14 +10,14 @@ namespace bbuild {
 WORKSPACE workspace;
 std::map<std::string, PROJECT> projects;
 
-bool load() {
-  if (!loadWorkspace("./", &workspace)) {
+bool load(const CONFIG* c) {
+  if (!loadWorkspace("./", &workspace, c)) {
     fprintf(stderr, "Failed to load './bbuild.workspace.yaml'!\n");
     return false;
   }
   for (const auto& ps : workspace.projects) {
     PROJECT p;
-    if (!loadProject(ps + "/", &p)) {
+    if (!loadProject(ps + "/", &p, c)) {
       fprintf(stderr, "Failed to load project '%s/bbuild.project.yaml'!\n",
               ps.c_str());
       return false;
@@ -38,7 +38,7 @@ bool load() {
 
   PROJECT dp = projects.at(workspace.defProject);
   printf("Building '%s'\n", dp.name.c_str());
-  if (!buildProject(dp)) {
+  if (!buildProject(dp, c)) {
     fprintf(stderr, "Failed to load '%s'!\n", dp.name.c_str());
     return false;
   }
@@ -46,8 +46,8 @@ bool load() {
   return true;
 }
 
-bool buildProject(const PROJECT& p) {
-  setupBuildOutput(p.name);
+bool buildProject(const PROJECT& p, const CONFIG* c) {
+  setupBuildOutput(p.name, c);
 
   printf("Checking for dependencies for '%s'\n", p.name.c_str());
   for (const auto& pp : p.depends) {
@@ -57,7 +57,7 @@ bool buildProject(const PROJECT& p) {
     }
     PROJECT dp = projects.at(pp);
     printf("Depends on %s\n", dp.name.c_str());
-    buildProject(dp);
+    buildProject(dp, c);
   }
 
   std::string objectCommand =
@@ -89,8 +89,8 @@ bool buildProject(const PROJECT& p) {
           for (const auto& d : p.defines) {
             oc += "-D" + d + " ";
           }
-          oc += "../../" + p.path + s + f.path().filename().string() + " ";
-          oc += "-o " + f.path().filename().stem().string() + ".o";
+          oc += "../../" + f.path().string() + " ";
+          oc += "-o " + getUUID() + ".o";
 
           printf("Object: %s\n", oc.c_str());
           std::string o = runCommand(oc.c_str());
@@ -122,7 +122,7 @@ bool buildProject(const PROJECT& p) {
   return true;
 }
 
-bool setupBuildOutput(std::string path) {
+bool setupBuildOutput(std::string path, const CONFIG* c) {
   printf("Generating output folder for 'build/%s'\n", path.c_str());
   if (!std::filesystem::exists("build/")) {
     std::filesystem::create_directory("build/");

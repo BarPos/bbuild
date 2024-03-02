@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 
+#include "config.h"
+
 namespace bbuild {
 enum PROJECT_TYPE { EXEC = 1, LIB = 2 };
 
@@ -21,6 +23,6 @@ struct PROJECT {
   std::vector<std::string> link;
 };
 
-bool loadProject(const std::string& path, PROJECT* r);
+bool loadProject(const std::string& path, PROJECT* r, const CONFIG* c);
 void printProject(const PROJECT& p);
 }  // namespace bbuild

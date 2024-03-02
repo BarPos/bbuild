@@ -9,4 +9,5 @@
 
 namespace bbuild {
 std::string runCommand(const char *command);
-}
+std::string getUUID();
+}  // namespace bbuild

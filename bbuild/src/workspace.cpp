@@ -3,7 +3,7 @@
 #include <filesystem>
 
 namespace bbuild {
-bool loadWorkspace(const std::string& path, WORKSPACE* r) {
+bool loadWorkspace(const std::string& path, WORKSPACE* r, const CONFIG* c) {
   WORKSPACE w = {};
 
   if (!std::filesystem::exists(path + "bbuild.workspace.yaml")) {

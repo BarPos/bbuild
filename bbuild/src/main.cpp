@@ -2,9 +2,11 @@
 #include <string.h>
 #include <yaml-cpp/yaml.h>
 
+#include "config.h"
 #include "help.h"
 #include "loader.h"
 #include "project.h"
+#include "system.h"
 #include "workspace.h"
 
 int main(int argc, char **argv) {
@@ -12,6 +14,13 @@ int main(int argc, char **argv) {
     printf("Use '%s help' to see ussage.\n", argv[0]);
     return 1;
   }
+  bbuild::CONFIG config;
+  if (!bbuild::loadConfig(&config)) {
+  }
+  for (size_t i = 0; i < 50; i++) {
+    printf("%s\n", bbuild::getUUID().c_str());
+  }
+
   if (strcmp(argv[1], "help") == 0) {  // HELP COMMAND
     printf("%s", HELP_TEXT);
     return 0;
@@ -24,7 +33,7 @@ int main(int argc, char **argv) {
     }
     printf("Loading project: %sbbuild.project.yaml\n", arg.c_str());
     bbuild::PROJECT p;
-    if (!bbuild::loadProject(arg.c_str(), &p)) {
+    if (!bbuild::loadProject(arg.c_str(), &p, &config)) {
       fprintf(stderr, "Failed to load the project!\n");
       return 1;
     }
@@ -39,7 +48,7 @@ int main(int argc, char **argv) {
     }
     printf("Loading workspace: %sbbuild.workspace.yaml\n", arg.c_str());
     bbuild::WORKSPACE w;
-    if (!bbuild::loadWorkspace(arg.c_str(), &w)) {
+    if (!bbuild::loadWorkspace(arg.c_str(), &w, &config)) {
       fprintf(stderr, "Failed to load the workspace!\n");
       return 1;
     }
@@ -47,7 +56,7 @@ int main(int argc, char **argv) {
     return 0;
   } else if (strcmp(argv[1], "build") == 0) {  // BUILD COMMAND
     printf("BUILDING WORKSPACE\n");
-    if (!bbuild::load()) return 1;
+    if (!bbuild::load(&config)) return 1;
     return 0;
   } else {  // INCORRECT COMMAND
     printf("Use '%s help' to see ussage.\n", argv[0]);
